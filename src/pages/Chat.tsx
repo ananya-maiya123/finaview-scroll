@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
@@ -226,7 +225,7 @@ const Chat: React.FC = () => {
         
         <SidebarInset className="min-h-screen bg-gradient-to-b from-finaura to-finaura-dark">
           <Header />
-          <div className="px-5 py-4">
+          <div className="px-5 py-4 pb-20">
             {/* Chat history drawer button */}
             <div className="flex justify-between items-center mb-4">
               <h1 className="text-2xl font-bold text-white">Personalized Chatbot</h1>
@@ -267,7 +266,7 @@ const Chat: React.FC = () => {
             </div>
             
             {/* Chat history */}
-            <div className="h-[calc(100vh-220px)] overflow-y-auto mb-4 flex flex-col">
+            <div className="h-[calc(100vh-270px)] overflow-y-auto mb-4 flex flex-col">
               {chatHistory.map((chat, index) => (
                 <div 
                   key={index} 
@@ -301,7 +300,7 @@ const Chat: React.FC = () => {
             
             {/* Stock Chart when stock info is shown */}
             {showStockInfo && (
-              <div className="mt-4">
+              <div className="mt-4 mb-16">
                 <StockChart symbol={selectedStock} />
                 
                 <button 
@@ -317,7 +316,7 @@ const Chat: React.FC = () => {
             {!showStockInfo && chatHistory.length > 1 && (
               <button 
                 onClick={handleShowStockInfo}
-                className="w-full mt-3 py-2 flex items-center justify-center gap-2 bg-white/10 rounded-lg text-white font-medium hover:bg-white/20 transition-colors"
+                className="w-full mt-3 py-2 mb-16 flex items-center justify-center gap-2 bg-white/10 rounded-lg text-white font-medium hover:bg-white/20 transition-colors"
               >
                 <ChartBar className="h-5 w-5" />
                 View Stock Information

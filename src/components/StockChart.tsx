@@ -27,13 +27,13 @@ interface StockData {
 const StockChart: React.FC<StockChartProps> = ({ symbol }) => {
   const [stockData, setStockData] = useState<StockData[]>([]);
   const [stockInfo, setStockInfo] = useState({
-    price: 'Unknown',
-    change: 'Unknown',
-    percentChange: 'Unknown',
-    marketCap: 'Unknown',
-    peRatio: 'Unknown',
-    dividendYield: 'Unknown',
-    yearlyPerformance: 'Unknown',
+    price: '0.00',
+    change: '0.00',
+    percentChange: '0.00',
+    marketCap: '0',
+    peRatio: '0',
+    dividendYield: '0%',
+    yearlyPerformance: '0%',
   });
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -107,6 +107,7 @@ const StockChart: React.FC<StockChartProps> = ({ symbol }) => {
       'INFY.NS': 1500
     };
     
+    // Ensure we always return a valid number even for unknown symbols
     return priceMap[symbol] || 100 + (symbol.charCodeAt(0) % 10) * 20;
   };
   
@@ -136,22 +137,12 @@ const StockChart: React.FC<StockChartProps> = ({ symbol }) => {
     const change = parseFloat((basePrice - lastPrice).toFixed(2));
     const percentChange = parseFloat(((change / lastPrice) * 100).toFixed(2));
     
-    let marketCap, peRatio, dividendYield, yearlyPerformance;
-    
-    // For some symbols, show "Unknown" data to match the screenshot
-    if (['RELIANCE.NS', 'TCS.NS'].includes(symbol)) {
-      marketCap = 'Unknown';
-      peRatio = 'Unknown';
-      dividendYield = 'Unknown';
-      yearlyPerformance = 'Unknown';
-    } else {
-      // Generate realistic looking data
-      const mcMultiplier = Math.floor(Math.random() * 100) + 10;
-      marketCap = basePrice > 500 ? `${(basePrice * mcMultiplier / 1000).toFixed(2)}T` : `${(basePrice * mcMultiplier).toFixed(2)}B`;
-      peRatio = `${(Math.random() * 35 + 10).toFixed(2)}`;
-      dividendYield = `${(Math.random() * 3).toFixed(2)}%`;
-      yearlyPerformance = Math.random() > 0.5 ? `+${(Math.random() * 50).toFixed(2)}%` : `-${(Math.random() * 20).toFixed(2)}%`;
-    }
+    // Always generate real-looking data for all fields
+    const mcMultiplier = Math.floor(Math.random() * 100) + 10;
+    const marketCap = basePrice > 500 ? `${(basePrice * mcMultiplier / 1000).toFixed(2)}T` : `${(basePrice * mcMultiplier).toFixed(2)}B`;
+    const peRatio = `${(Math.random() * 35 + 10).toFixed(2)}`;
+    const dividendYield = `${(Math.random() * 3).toFixed(2)}%`;
+    const yearlyPerformance = Math.random() > 0.5 ? `+${(Math.random() * 50).toFixed(2)}%` : `-${(Math.random() * 20).toFixed(2)}%`;
     
     return {
       price: basePrice.toFixed(2),
