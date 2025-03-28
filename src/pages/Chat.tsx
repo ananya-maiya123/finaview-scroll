@@ -215,8 +215,8 @@ const Chat: React.FC = () => {
   };
 
   return (
-    <SidebarProvider>
-      <div className="flex w-full">
+    <div className="flex w-full">
+      <SidebarProvider>
         <InvestmentSidebar 
           investmentProfile={investmentProfile} 
           setInvestmentProfile={setInvestmentProfile}
@@ -326,8 +326,8 @@ const Chat: React.FC = () => {
           </div>
           <BottomNav />
         </SidebarInset>
-      </div>
-    </SidebarProvider>
+      </SidebarProvider>
+    </div>
   );
 };
 
