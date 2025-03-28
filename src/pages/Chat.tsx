@@ -1,6 +1,8 @@
+
 import React, { useState, useEffect } from 'react';
 import Header from '../components/Header';
 import BottomNav from '../components/BottomNav';
+import StockChart from '../components/StockChart';
 import { Send, Info, ChartBar, TrendingUp, TrendingDown, History } from 'lucide-react';
 import {
   Drawer,
@@ -18,6 +20,7 @@ import {
   SidebarProvider, 
   SidebarInset,
   SidebarHeader,
+  SidebarFooter,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton
@@ -127,7 +130,7 @@ const Chat: React.FC = () => {
     if (!message.trim()) return;
     
     // Add user message
-    const updatedHistory = [
+    const updatedHistory: ChatMessage[] = [
       ...chatHistory, 
       { 
         role: 'user', 
@@ -186,7 +189,7 @@ const Chat: React.FC = () => {
         Based on your current profile (${investmentProfile.region} region, ${investmentProfile.goal} goal, ${investmentProfile.riskTolerance} risk, ${investmentProfile.timeHorizon} year horizon), I can tailor my recommendations accordingly.`;
       }
       
-      const newHistory = [
+      const newHistory: ChatMessage[] = [
         ...updatedHistory,
         { 
           role: 'bot', 
@@ -296,57 +299,16 @@ const Chat: React.FC = () => {
               </button>
             </div>
             
-            {/* Stock information panel (conditionally shown) */}
+            {/* Stock Chart when stock info is shown */}
             {showStockInfo && (
-              <div className="mt-4 bg-white/10 rounded-lg p-4">
-                <div className="flex justify-between items-center mb-3">
-                  <h2 className="text-lg font-bold text-white">Stock Information</h2>
-                  <button 
-                    onClick={() => setShowStockInfo(false)}
-                    className="text-white/70 hover:text-white"
-                  >
-                    Close
-                  </button>
-                </div>
+              <div className="mt-4">
+                <StockChart symbol={selectedStock} />
                 
-                <div className="bg-white/5 rounded-lg p-3 mb-3">
-                  <div className="flex justify-between items-center">
-                    <div>
-                      <h3 className="font-medium text-white">{getStockInfo(selectedStock).name}</h3>
-                      <p className="text-sm text-white/70">{selectedStock}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="text-lg font-bold text-white">${typeof getStockInfo(selectedStock).price === 'number' ? getStockInfo(selectedStock).price.toFixed(2) : getStockInfo(selectedStock).price}</p>
-                      <p className={`text-sm ${parseFloat(getStockInfo(selectedStock).change) >= 0 ? 'text-green-400' : 'text-red-400'}`}>
-                        {parseFloat(getStockInfo(selectedStock).change) >= 0 ? '+' : ''}{getStockInfo(selectedStock).change} ({getStockInfo(selectedStock).percentChange}%)
-                      </p>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="bg-white/5 rounded-lg p-3">
-                    <p className="text-xs text-white/70">Market Cap</p>
-                    <p className="text-sm font-medium text-white">{getStockInfo(selectedStock).marketCap}</p>
-                  </div>
-                  <div className="bg-white/5 rounded-lg p-3">
-                    <p className="text-xs text-white/70">P/E Ratio</p>
-                    <p className="text-sm font-medium text-white">{getStockInfo(selectedStock).peRatio}</p>
-                  </div>
-                  <div className="bg-white/5 rounded-lg p-3">
-                    <p className="text-xs text-white/70">Dividend Yield</p>
-                    <p className="text-sm font-medium text-white">{getStockInfo(selectedStock).dividendYield}</p>
-                  </div>
-                  <div className="bg-white/5 rounded-lg p-3">
-                    <p className="text-xs text-white/70">1-Year Performance</p>
-                    <p className={`text-sm font-medium ${getStockInfo(selectedStock).yearlyPerformance.includes('+') ? 'text-green-400' : 'text-red-400'}`}>
-                      {getStockInfo(selectedStock).yearlyPerformance}
-                    </p>
-                  </div>
-                </div>
-                
-                <button className="w-full mt-3 py-2 bg-finaura-accent rounded-lg text-white font-medium">
-                  View Detailed Analysis
+                <button 
+                  onClick={() => setShowStockInfo(false)}
+                  className="w-full mt-3 py-2 bg-finaura-accent rounded-lg text-white font-medium"
+                >
+                  Hide Stock Information
                 </button>
               </div>
             )}
